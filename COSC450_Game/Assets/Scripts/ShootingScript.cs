@@ -17,10 +17,25 @@ public class ShootingScript : MonoBehaviour
     public float fireRate = .8f;
     //direction bullet will be facing
     private Quaternion fireDirection;
-    // Start is called before the first frame update
-    public Rigidbody2D clone;
+    //time for a powerups duration
+    public float gunSpeedTimerDuration = 20f;
+    public float movementSpeedTimerDuration = 20f;
+    //timers for the powerups
+    private float gunSpeedTimer;
+    private float movementSpeedTimer;
+    //shows if their was a power up
+    private bool powerUpGun;
+    private bool powerUpSpeed;
+
+    private PlayerMovement playerMovement;
+
     void Start()
     {
+        powerUpGun = false;
+        powerUpSpeed = false;
+        gunSpeedTimer = 0f;
+        movementSpeedTimer = 0f;
+        playerMovement = GetComponent<PlayerMovement>();
         player = GetComponent<Transform>();
         fireRateCounter = 0f;
     }
@@ -28,7 +43,34 @@ public class ShootingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(gunSpeedTimer);
+      
+        //when the timers are up then you go back to normal, also checks if there was a powerup given
+        if (gunSpeedTimer <= 0 && powerUpGun)
+        {
+            fireRate *= 2;
+            powerUpGun = false;
+        }
+        //if the timer is up then reduce it
+        if (movementSpeedTimer <= 0 && powerUpSpeed)
+        {
+            playerMovement.playerSpeed /= 2;
+            powerUpSpeed = false;
+        }
+        //count downs
+        if (!(fireRateCounter <= 0))
+        {
+            fireRateCounter -= Time.deltaTime;
+        }
+        if (!(movementSpeedTimer <= 0))
+        {
+            movementSpeedTimer -= Time.deltaTime;
+        }
+        if (!(gunSpeedTimer <= 0))
+        {
+            gunSpeedTimer -= Time.deltaTime;
+        }
+
     }
 
     void FixedUpdate()
@@ -36,27 +78,63 @@ public class ShootingScript : MonoBehaviour
         //shooting up
         if (Input.GetKey(KeyCode.I) && fireRateCounter <= 0)
         {
-            //direction bullet faces
-            fireDirection = Quaternion.Euler(0f, 0f, 0f);
-            //set fire rate to the amount of time to wait
-            fireRateCounter = fireRate;
-            //offset above player
-            positionOffset = player.position + Vector3.up * offsetModifier;
-            //creates bullet
-            var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
-            //applies speed to the bullet
-            bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.up * bulletSpeed);
-            //destroys bullet after 1 second
-            Destroy(bullet, 1.0f);
+            //shoot top right
+            if (Input.GetKey(KeyCode.L))
+            {
+                //direction bullet faces
+                fireDirection = Quaternion.Euler(0f, 0f, -45f);
+                //set fire rate to the amount of time to wait
+                fireRateCounter = fireRate;
+                //offset so bullet doesn't spawn on player, diagonols have less offset
+                positionOffset = player.position + (Vector3.up + Vector3.right) * offsetModifier * .66f;
+                //creates bullet
+                var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                //applies speed to the bullet
+                bullet.GetComponent<Rigidbody2D>().AddForce((Vector2.up + Vector2.right) * bulletSpeed);
+                //destroys bullet after 1 second
+                Destroy(bullet, 1.0f);
+            }
+            //shoot top left
+            else if (Input.GetKey(KeyCode.J))
+            {
+                //direction bullet faces
+                fireDirection = Quaternion.Euler(0f, 0f, 45f);
+                //set fire rate to the amount of time to wait
+                fireRateCounter = fireRate;
+                //offset so bullet doesn't spawn on player, diagonols have less offset
+                positionOffset = player.position + (Vector3.up + Vector3.left) * offsetModifier * .66f;
+                //creates bullet
+                var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                //applies speed to the bullet
+                bullet.GetComponent<Rigidbody2D>().AddForce((Vector2.up + Vector2.left) * bulletSpeed);
+                //destroys bullet after 1 second
+                Destroy(bullet, 1.0f);
+            }
+            //shoot up
+            else
+            {
+                //direction bullet faces
+                fireDirection = Quaternion.Euler(0f, 0f, 0f);
+                //set fire rate to the amount of time to wait
+                fireRateCounter = fireRate;
+                //offset below player
+                positionOffset = player.position + Vector3.up * offsetModifier;
+                //creates bullet
+                var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                //applies speed to the bullet
+                bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.up * bulletSpeed);
+                //destroys bullet after 1 second
+                Destroy(bullet, 1.0f);
+            }
         }
         //shooting left
-        if (Input.GetKey(KeyCode.J) && fireRateCounter <= 0)
+        if (Input.GetKey(KeyCode.J) && fireRateCounter <= 0 && !(Input.GetKey(KeyCode.K)) && !(Input.GetKey(KeyCode.I)))
         {
             //direction bullet faces
             fireDirection = Quaternion.Euler(0f, 0f, 90f);
             //set fire rate to the amount of time to wait
             fireRateCounter = fireRate;
-            //offset above player
+            //offset left of player
             positionOffset = player.position + Vector3.left * offsetModifier;
             //creates bullet
             var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
@@ -65,14 +143,14 @@ public class ShootingScript : MonoBehaviour
             //destroys bullet after 1 second
             Destroy(bullet, 1.0f);
         }
-        //shooting right
-        if (Input.GetKey(KeyCode.L) && fireRateCounter <= 0)
+        //shooting right if the right button is pressed and the bottom and top arent pressed
+        if (Input.GetKey(KeyCode.L) && fireRateCounter <= 0 && !(Input.GetKey(KeyCode.K)) && !(Input.GetKey(KeyCode.I)))
         {
             //direction bullet faces
             fireDirection = Quaternion.Euler(0f, 0f, 90f);
             //set fire rate to the amount of time to wait
             fireRateCounter = fireRate;
-            //offset above player
+            //offset to the right of player
             positionOffset = player.position + Vector3.right * offsetModifier;
             //creates bullet
             var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
@@ -81,29 +159,81 @@ public class ShootingScript : MonoBehaviour
             //destroys bullet after 1 second
             Destroy(bullet, 1.0f);
         }
-        //shooting down
+        //shooting down and bottom left and bottom right
         if (Input.GetKey(KeyCode.K) && fireRateCounter <= 0)
         {
-            //direction bullet faces
-            fireDirection = Quaternion.Euler(0f, 0f, 0f);
-            //set fire rate to the amount of time to wait
-            fireRateCounter = fireRate;
-            //offset above player
-            positionOffset = player.position + Vector3.down * offsetModifier;
-            //creates bullet
-            var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
-            //applies speed to the bullet
-            bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.down * bulletSpeed);
-            //destroys bullet after 1 second
-            Destroy(bullet, 1.0f);
+            //shoot bottom right
+            if (Input.GetKey(KeyCode.L))
+            {
+                //direction bullet faces
+                fireDirection = Quaternion.Euler(0f, 0f, 45f);
+                //set fire rate to the amount of time to wait
+                fireRateCounter = fireRate;
+                //offset so bullet doesn't spawn on player, diagonols have less offset
+                positionOffset = player.position + (Vector3.down + Vector3.right) * offsetModifier * .66f;
+                //creates bullet
+                var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                //applies speed to the bullet
+                bullet.GetComponent<Rigidbody2D>().AddForce((Vector2.down + Vector2.right )* bulletSpeed);
+                //destroys bullet after 1 second
+                Destroy(bullet, 1.0f);
+            }
+            //shoot bottom left
+            else if (Input.GetKey(KeyCode.J)){
+                //direction bullet faces
+                fireDirection = Quaternion.Euler(0f, 0f, -45f);
+                //set fire rate to the amount of time to wait
+                fireRateCounter = fireRate;
+                //offset so bullet doesn't spawn on player, diagonols have less offset
+                positionOffset = player.position + (Vector3.down +Vector3.left ) * offsetModifier * .66f;
+                //creates bullet
+                var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                //applies speed to the bullet
+                bullet.GetComponent<Rigidbody2D>().AddForce((Vector2.down + Vector2.left) * bulletSpeed);
+                //destroys bullet after 1 second
+                Destroy(bullet, 1.0f);
+            }
+            //shoot down
+            else
+            {
+                //direction bullet faces
+                fireDirection = Quaternion.Euler(0f, 0f, 0f);
+                //set fire rate to the amount of time to wait
+                fireRateCounter = fireRate;
+                //offset below player
+                positionOffset = player.position + Vector3.down * offsetModifier;
+                //creates bullet
+                var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                //applies speed to the bullet
+                bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.down * bulletSpeed);
+                //destroys bullet after 1 second
+                Destroy(bullet, 1.0f);
+            }
+            
         }
 
-        //countdown for timer
-        if (!(fireRateCounter <= 0))
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        if (collision.gameObject.tag == "PowerUp")
         {
-            fireRateCounter -= Time.deltaTime;
+            if(collision.gameObject.name == "MovementSpeed")
+            {
+                movementSpeedTimer = movementSpeedTimerDuration;
+                playerMovement.playerSpeed *= 2;
+                powerUpSpeed = true;
+                Destroy(collision.gameObject);
+            } 
+            else if(collision.gameObject.name == "FireSpeed")
+            {
+                gunSpeedTimer = gunSpeedTimerDuration;
+                fireRate /= 2;
+                powerUpGun = true;
+                Destroy(collision.gameObject);
+            }
         }
-
     }
 
 }

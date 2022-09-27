@@ -26,11 +26,14 @@ public class ShootingScript : MonoBehaviour
     //shows if their was a power up
     private bool powerUpGun;
     private bool powerUpSpeed;
+    //gun damage
+    private float gunDamage;
 
     private PlayerMovement playerMovement;
 
     void Start()
     {
+        gunDamage = 1f;
         powerUpGun = false;
         powerUpSpeed = false;
         gunSpeedTimer = 0f;
@@ -43,7 +46,6 @@ public class ShootingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(gunSpeedTimer);
       
         //when the timers are up then you go back to normal, also checks if there was a powerup given
         if (gunSpeedTimer <= 0 && powerUpGun)
@@ -213,7 +215,7 @@ public class ShootingScript : MonoBehaviour
         }
 
     }
-
+    //handles walking over powerup
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log(collision.gameObject.name);
@@ -235,5 +237,9 @@ public class ShootingScript : MonoBehaviour
             }
         }
     }
-
+    //accessor
+    public float getGunDamage()
+    {
+        return gunDamage;
+    }
 }

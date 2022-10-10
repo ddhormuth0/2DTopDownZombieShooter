@@ -15,7 +15,6 @@ public class BulletCollision : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            Debug.Log(collision.gameObject.name);
             //find the script to take damage then destroy the bullet
             collision.gameObject.GetComponent<ZombieBehavior>().takeDamage(script.getGunDamage());
             Destroy(this.gameObject);

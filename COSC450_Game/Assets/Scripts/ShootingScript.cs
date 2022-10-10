@@ -26,6 +26,9 @@ public class ShootingScript : MonoBehaviour
     //shows if their was a power up
     private bool powerUpGun;
     private bool powerUpSpeed;
+    //allows you to wait to use
+    private bool gunPowerUpReady;
+    private bool speedPowerUpReady;
     //gun damage
     private float gunDamage;
 
@@ -221,22 +224,34 @@ public class ShootingScript : MonoBehaviour
         Debug.Log(collision.gameObject.name);
         if (collision.gameObject.tag == "PowerUp")
         {
-            if(collision.gameObject.name == "MovementSpeed")
+            if(collision.gameObject.name == "MovementSpeed(Clone)")
             {
+                //if there is not an active power up, then apply the power up
                 movementSpeedTimer = movementSpeedTimerDuration;
-                playerMovement.playerSpeed *= 2;
-                powerUpSpeed = true;
+                if (!powerUpSpeed)
+                {
+                    playerMovement.playerSpeed *= 2;
+                    powerUpSpeed = true;
+                    
+                }
                 Destroy(collision.gameObject);
             } 
-            else if(collision.gameObject.name == "FireSpeed")
+            else if(collision.gameObject.name == "FireSpeed(Clone)")
             {
                 gunSpeedTimer = gunSpeedTimerDuration;
-                fireRate /= 2;
-                powerUpGun = true;
+                //if there is not an active power up, then apply the power up
+
+                if (!powerUpGun)
+                {
+                    fireRate /= 2;
+                    powerUpGun = true;
+                    
+                }
                 Destroy(collision.gameObject);
             }
         }
     }
+
     //accessor
     public float getGunDamage()
     {

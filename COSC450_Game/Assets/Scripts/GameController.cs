@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -16,9 +17,15 @@ public class GameController : MonoBehaviour
     [SerializeField] float lowerBoundSpawn = 0.5f;
     //higher random amount for time
     [SerializeField] float UpperBoundSpawn = 3f;
+    [SerializeField] int percentSpawn;
 
+    public Text timeText;
+    
     public GameObject zombiePrefab;
+    public GameObject speedPowerUp;
+    public GameObject fireRatePowerUp;
     public GameObject spawnArea1, spawnArea2, spawnArea3, spawnArea4;
+
 
 
     private void Start()
@@ -32,15 +39,44 @@ public class GameController : MonoBehaviour
     void Update()
     {
 
+        DisplayTime(roundTimer);
         //spawn some zombies when timer is 0
         if(spawnTimer <= 0 && roundTimer > 0)
         {
-            
+
+            //spawn the power ups on the map, you have a 10% chance of getting one
+            int powerUpPercent = Random.Range(1, 101);
+            Debug.Log("Power up percent:" + powerUpPercent);
+            if (powerUpPercent > percentSpawn)
+            {
+                //randomly chooses a power up to pick
+                int powerUpNum = Random.Range(1, 3);
+                //randomly choose a spot to spawn
+                float randomX = Random.Range(-8.5f, 8.5f);
+                float randomY = Random.Range(-4.5f, 4.5f);
+                Vector3 randomPosition = new Vector3(randomX, randomY, 0f);
+                switch (powerUpNum)
+                {
+                    //spawn speed power up
+                    case 1:
+                        Instantiate(speedPowerUp, randomPosition, Quaternion.Euler(0f,0f,0f));
+                        return;
+                    case 2:
+                        Instantiate(fireRatePowerUp, randomPosition, Quaternion.Euler(0f, 0f, 0f));
+                        return;
+                    //error
+                    default:
+                        Debug.LogWarning("A power up that doesnt exist was selected");
+                        return;
+                }
+            }
+
             //spawn the amount of zombies specified
             for(int i = 0; i<amountToSpawn; i++)
             {
                 //select a random number 1-4 and this will determine the spot spawned in
                 int spot = Random.Range(1, 5);
+
 
                 //spawn zombies at top
                 if(spot == 1)
@@ -123,14 +159,26 @@ public class GameController : MonoBehaviour
             spawnTimer = Random.Range(lowerBoundSpawn, UpperBoundSpawn);
         }
 
+        
             
     //lower timers
     if(roundTimer > 0)
         {
             spawnTimer -= Time.deltaTime;
             roundTimer -= Time.deltaTime;
-            Debug.Log(roundTimer);
         }
 
+    }
+    void DisplayTime(float timeDisplay)
+    {
+        if (timeDisplay < 0)
+        {
+            timeDisplay = 0;
+        }
+        //converts seconds left to minutes and seconds
+        float minutes = Mathf.FloorToInt(timeDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeDisplay % 60);
+        //string format for time
+        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

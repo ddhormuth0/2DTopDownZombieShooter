@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     //higher random amount for time
     [SerializeField] float UpperBoundSpawn = 3f;
     [SerializeField] int percentSpawn;
+    [SerializeField] int lives;
 
     public Text timeText;
     
@@ -33,6 +34,7 @@ public class GameController : MonoBehaviour
         roundTimer = roundTotalTimer;
         spawnTimer = 0;
         amountToSpawn = 3;
+        lives = 3;
     }
 
     // Update is called once per frame
@@ -180,5 +182,20 @@ public class GameController : MonoBehaviour
         float seconds = Mathf.FloorToInt(timeDisplay % 60);
         //string format for time
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    //move a players life down
+    public void hasDied()
+    {
+        lives--;
+        if(lives <= 0)
+        {
+            //do whatever happens when they die here
+        }
+    }
+
+    public int returnLives()
+    {
+        return this.lives;
     }
 }

@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 586840356}
   - component: {fileID: 586840359}
   - component: {fileID: 586840360}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -668,6 +668,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   rig: {fileID: 586840356}
+  sprite: {fileID: 0}
+  gc: {fileID: 0}
 --- !u!50 &586840356
 Rigidbody2D:
   serializedVersion: 4
@@ -1532,6 +1534,7 @@ MonoBehaviour:
   lowerBoundSpawn: 1
   UpperBoundSpawn: 3
   percentSpawn: 90
+  lives: 3
   timeText: {fileID: 278881827}
   zombiePrefab: {fileID: 6248047164758457842, guid: 7e80356db7f598142a14fb5b771c1693, type: 3}
   speedPowerUp: {fileID: 4820875924317110062, guid: a42ee90f14ec02542ab9b3ee65912c5f, type: 3}

@@ -12,11 +12,18 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementDirection;
     //Allows for script use of rigid body component
     public Rigidbody2D rig;
+    [SerializeField] SpriteRenderer sprite;
+    private bool isInvincible;
+
+    [SerializeField] GameController gc;
 
     // Start is called before the first frame update
     void Start()
     {
         this.firstPosition();
+        sprite = this.GetComponent<SpriteRenderer>();
+        isInvincible = false;
+        gc = GameObject.Find("GameController").GetComponent<GameController>();
     }
     //process the inputs in update
     void Update()
@@ -52,5 +59,56 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    //called when player dies
+    public void PlayerRespawn()
+    {
+        this.transform.position = new Vector3(0f, 0f, 0f);
+        isInvincible = true;
+        StartCoroutine(characterInvisible());
+    }
+    //flashes character sprite
+    public IEnumerator characterInvisible()
+    {
+        Debug.Log("Colliding with " + isInvincible);
+        sprite.color = new Color(1, 1, 1, .2f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, 1f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, .2f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, 1f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, .2f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, 1f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, .2f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, 1f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, .2f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, 1f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, .2f);
+        yield return new WaitForSeconds(.125f);
+        sprite.color = new Color(1, 1, 1, 1f);
+        isInvincible = false;
+    }
+    //when a zombie collides with the player, remove a life
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //if the zombie collides with the character and the character hasnt recently died, then take down a life
+        if (collision.gameObject.tag == "Enemy" && !isInvincible)
+        {
+            
+            //call the game controller to take down a life
+            gc.hasDied();
+            //respawn player
+            PlayerRespawn();
+            
+
+        }
+    }
 }
 

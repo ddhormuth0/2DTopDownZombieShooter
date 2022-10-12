@@ -221,7 +221,6 @@ public class ShootingScript : MonoBehaviour
     //handles walking over powerup
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.tag == "PowerUp")
         {
             if(collision.gameObject.name == "MovementSpeed(Clone)")

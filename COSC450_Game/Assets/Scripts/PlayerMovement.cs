@@ -69,7 +69,6 @@ public class PlayerMovement : MonoBehaviour
     //flashes character sprite
     public IEnumerator characterInvisible()
     {
-        Debug.Log("Colliding with " + isInvincible);
         sprite.color = new Color(1, 1, 1, .2f);
         yield return new WaitForSeconds(.125f);
         sprite.color = new Color(1, 1, 1, 1f);

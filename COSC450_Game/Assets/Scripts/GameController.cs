@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     [SerializeField] int lives;
 
     public Text timeText;
-    
+    public Text livesText;
     public GameObject zombiePrefab;
     public GameObject speedPowerUp;
     public GameObject fireRatePowerUp;
@@ -139,22 +139,22 @@ public class GameController : MonoBehaviour
             //based on 75% time left
             if(percent >= .75f)
             {
-                amountToSpawn = 2;
+                amountToSpawn = Random.Range(1, 4);
             }
             //50% time left
             else if(percent >= .50f)
             {
-                amountToSpawn = 4;
+                amountToSpawn = Random.Range(2, 5);
             }
             //25% time left
             else if (percent >= .25f)
             {
-                amountToSpawn = 6;
+                amountToSpawn = Random.Range(4, 7);
             }
             //less than 25% time left
             else
             {
-                amountToSpawn = 8;
+                amountToSpawn = Random.Range(6,9);
 
             }
             //amount of time in between spawns
@@ -169,7 +169,8 @@ public class GameController : MonoBehaviour
             spawnTimer -= Time.deltaTime;
             roundTimer -= Time.deltaTime;
         }
-
+        //string format for lives
+        livesText.text = ("Lives: " + lives);
     }
     void DisplayTime(float timeDisplay)
     {

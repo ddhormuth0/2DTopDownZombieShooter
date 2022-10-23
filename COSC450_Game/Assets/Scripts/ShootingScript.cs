@@ -212,7 +212,7 @@ public class ShootingScript : MonoBehaviour
                 //applies speed to the bullet
                 bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.down * bulletSpeed);
                 //destroys bullet after 1 second
-                Destroy(bullet, 1.0f);
+                Destroy(bullet, .70f);
             }
             
         }

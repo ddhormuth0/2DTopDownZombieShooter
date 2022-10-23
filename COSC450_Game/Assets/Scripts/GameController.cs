@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -191,7 +192,8 @@ public class GameController : MonoBehaviour
         lives--;
         if(lives <= 0)
         {
-            //do whatever happens when they die here
+            //increment the active scene to the next scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 

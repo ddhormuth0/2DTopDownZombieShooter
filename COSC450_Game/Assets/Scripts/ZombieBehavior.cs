@@ -10,6 +10,7 @@ public class ZombieBehavior : MonoBehaviour
 
     Rigidbody2D zombie;
     Transform target;
+    [SerializeField] GameController gcScript;
 
     Vector2 moveDirection;
 
@@ -17,6 +18,7 @@ public class ZombieBehavior : MonoBehaviour
     {
         zombie = this.GetComponent<Rigidbody2D>();
         target = GameObject.Find("Player").transform;
+        gcScript = GameObject.Find("GameController").GetComponent<GameController>();
     }
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,7 @@ public class ZombieBehavior : MonoBehaviour
         {
             //gives us the angle between the zombie and the player by taking the tangent of the y and x values between them
             Vector3 direction = (target.position - transform.position).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             zombie.rotation = angle;
             moveDirection = direction;
         }
@@ -53,5 +55,10 @@ public class ZombieBehavior : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public void OnDestroy()
+    {
+        gcScript.decrementZombies();
     }
 }

@@ -20,6 +20,12 @@ public class GameController : MonoBehaviour
     [SerializeField] float UpperBoundSpawn = 3f;
     [SerializeField] int percentSpawn;
     [SerializeField] int lives;
+    [SerializeField] SpriteRenderer sprite;
+    [SerializeField] Text gameEnd;
+    private bool firstTime;
+    private float timeTillStart;
+    private int amountOfZombies;
+    [SerializeField] Text zombies;
 
     public Text timeText;
     public Text livesText;
@@ -33,16 +39,34 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         roundTimer = roundTotalTimer;
-        spawnTimer = 0;
+        spawnTimer = 0.5f;
         amountToSpawn = 3;
         lives = 3;
+        firstTime = true;
+        timeTillStart = 10f;
+        amountOfZombies = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        DisplayTime(roundTimer);
+        displayZombies(amountOfZombies);
+        if (firstTime)
+        {
+            DisplayTime(timeTillStart);
+            Time.timeScale = 0f;
+            timeTillStart -= Time.unscaledDeltaTime;
+            if(timeTillStart <= 0)
+            {
+                firstTime = false;
+                Time.timeScale = 1f;
+            }
+            
+        }
+        if (!firstTime)
+        {
+            DisplayTime(roundTimer);
+        }
         //spawn some zombies when timer is 0
         if(spawnTimer <= 0 && roundTimer > 0)
         {
@@ -77,6 +101,7 @@ public class GameController : MonoBehaviour
             //spawn the amount of zombies specified
             for(int i = 0; i<amountToSpawn; i++)
             {
+                amountOfZombies++;
                 //select a random number 1-4 and this will determine the spot spawned in
                 int spot = Random.Range(1, 5);
 
@@ -133,7 +158,6 @@ public class GameController : MonoBehaviour
                         Instantiate(zombiePrefab, spawnArea4.transform.position + Vector3.down * .5f, Quaternion.Euler(0, 0, 90f));
                     }
                 }
-
             }
             //choose a random number based on time
             float percent = (roundTimer / roundTotalTimer);
@@ -170,6 +194,14 @@ public class GameController : MonoBehaviour
             spawnTimer -= Time.deltaTime;
             roundTimer -= Time.deltaTime;
         }
+        //timer is up
+    else
+    {
+        if(amountOfZombies == 0)
+            {
+                StartCoroutine(endSceneWin());
+            }
+    }
         //string format for lives
         livesText.text = ("Lives: " + lives);
     }
@@ -193,12 +225,38 @@ public class GameController : MonoBehaviour
         if(lives <= 0)
         {
             //increment the active scene to the next scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            StartCoroutine(endSceneLose());
         }
     }
-
+    //FIX THE ISSUES FOR END GAME
+    public IEnumerator endSceneLose()
+    {
+        Time.timeScale = 0;
+        gameEnd.text = ("You Lost");
+        gameEnd.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(4f);
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public IEnumerator endSceneWin()
+    {
+        Time.timeScale = 0;
+        gameEnd.text = ("You Did It!");
+        gameEnd.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(4f);
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void decrementZombies()
+    {
+        amountOfZombies--;
+    }
     public int returnLives()
     {
         return this.lives;
+    }
+    public void displayZombies(int num)
+    {
+        zombies.text = ("Amount Of Zombies: " + amountOfZombies);
     }
 }

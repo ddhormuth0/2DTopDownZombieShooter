@@ -81,10 +81,10 @@ public class PlayerMovement : MonoBehaviour
         isInvincible = false;
     }
     //when a zombie collides with the player, remove a life
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         //if the zombie collides with the character and the character hasnt recently died, then take down a life
-        if (collision.gameObject.tag == "Enemy" && !isInvincible)
+        if ((collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyProjectile") && !isInvincible)
         {
             
             //call the game controller to take down a life
@@ -94,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
             
 
         }
+
     }
 }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1480278658243445677}
   m_Layer: 0
   m_Name: Eye
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6323979721338995584}
   m_Layer: 7
   m_Name: arm (4)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 8529093401186672872}
   m_Layer: 7
   m_Name: arm (5)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 5753371250453865764}
   m_Layer: 7
   m_Name: arm (3)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 6227833193199561013}
   m_Layer: 7
   m_Name: arm (2)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,7 +491,7 @@ GameObject:
   - component: {fileID: 8851973164849622104}
   m_Layer: 7
   m_Name: arm (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -591,6 +591,7 @@ GameObject:
   - component: {fileID: 6248047164758457847}
   - component: {fileID: 6866361909396550253}
   - component: {fileID: 6268384906932207674}
+  - component: {fileID: 4623328605418340315}
   m_Layer: 7
   m_Name: Zombie
   m_TagString: Enemy
@@ -687,6 +688,14 @@ MonoBehaviour:
   maxhealth: 1
   movementSpeed: 3
   gcScript: {fileID: 0}
+  isBoss: 0
+  lowerBound: 0
+  upperBound: 0
+  lowerBoundCrazy: 0
+  upperBoundCrazy: 0
+  projectile: {fileID: 0}
+  offsetModifier: 0
+  projectileSpeed: 0
 --- !u!50 &6248047164758457847
 Rigidbody2D:
   serializedVersion: 4
@@ -743,6 +752,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &4623328605418340315
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6248047164758457842}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &6480901150036354317
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,7 +780,7 @@ GameObject:
   - component: {fileID: 3251184995551404324}
   m_Layer: 0
   m_Name: Eye
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -838,7 +863,7 @@ GameObject:
   - component: {fileID: 3171261970069512374}
   m_Layer: 7
   m_Name: arm (6)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -23,12 +23,15 @@ public class GameController : MonoBehaviour
     [SerializeField] SpriteRenderer sprite;
     [SerializeField] Text gameEnd;
     private bool firstTime;
-    private float timeTillStart;
+    [SerializeField] float timeTillStart;
     private int amountOfZombies;
     [SerializeField] Text zombies;
+    private bool bossFightMode;
 
+    public GameObject slider;
     public Text timeText;
     public Text livesText;
+    public GameObject bossZombie;
     public GameObject zombiePrefab;
     public GameObject speedPowerUp;
     public GameObject fireRatePowerUp;
@@ -43,8 +46,8 @@ public class GameController : MonoBehaviour
         amountToSpawn = 3;
         lives = 3;
         firstTime = true;
-        timeTillStart = 4f;
         amountOfZombies = 0;
+        bossFightMode = false;
     }
 
     // Update is called once per frame
@@ -185,7 +188,11 @@ public class GameController : MonoBehaviour
             //amount of time in between spawns
             spawnTimer = Random.Range(lowerBoundSpawn, UpperBoundSpawn);
         }
-
+        //for end of game
+        if (bossFightMode && amountOfZombies == 0)
+        {
+            StartCoroutine(endSceneWin());
+        }
         
             
     //lower timers
@@ -197,9 +204,9 @@ public class GameController : MonoBehaviour
         //timer is up
     else
     {
-        if(amountOfZombies == 0)
+        if(amountOfZombies == 0 && !bossFightMode)
             {
-                StartCoroutine(endSceneWin());
+                StartCoroutine(bossFight());
             }
     }
         //string format for lives
@@ -228,7 +235,6 @@ public class GameController : MonoBehaviour
             StartCoroutine(endSceneLose());
         }
     }
-    //FIX THE ISSUES FOR END GAME
     public IEnumerator endSceneLose()
     {
         Time.timeScale = 0;
@@ -246,6 +252,21 @@ public class GameController : MonoBehaviour
         yield return new WaitForSecondsRealtime(4f);
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public IEnumerator bossFight()
+    {
+        amountOfZombies++;
+        timeText.gameObject.SetActive(false);
+        zombies.gameObject.SetActive(false);
+        gameEnd.text = ("Something is coming...");
+        gameEnd.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        slider.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        gameEnd.gameObject.SetActive(false);
+        bossZombie.SetActive(true);
+        bossFightMode = true;
     }
     public void decrementZombies()
     {

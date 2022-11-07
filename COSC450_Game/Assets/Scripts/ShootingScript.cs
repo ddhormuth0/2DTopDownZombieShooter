@@ -33,6 +33,8 @@ public class ShootingScript : MonoBehaviour
     private float gunDamage;
 
     [SerializeField] float gunOffset = .5f;
+    [SerializeField] float gunModifier;
+    [SerializeField] float movementSpeedModifier;
 
     private PlayerMovement playerMovement;
 
@@ -55,13 +57,13 @@ public class ShootingScript : MonoBehaviour
         //when the timers are up then you go back to normal, also checks if there was a powerup given
         if (gunSpeedTimer <= 0 && powerUpGun)
         {
-            fireRate *= 2;
+            fireRate *= gunModifier;
             powerUpGun = false;
         }
         //if the timer is up then reduce it
         if (movementSpeedTimer <= 0 && powerUpSpeed)
         {
-            playerMovement.playerSpeed /= 2;
+            playerMovement.playerSpeed /= movementSpeedModifier;
             powerUpSpeed = false;
         }
         //count downs
@@ -247,7 +249,7 @@ public class ShootingScript : MonoBehaviour
                 movementSpeedTimer = movementSpeedTimerDuration;
                 if (!powerUpSpeed)
                 {
-                    playerMovement.playerSpeed *= 2;
+                    playerMovement.playerSpeed *= movementSpeedModifier;
                     powerUpSpeed = true;
                     
                 }
@@ -260,7 +262,7 @@ public class ShootingScript : MonoBehaviour
 
                 if (!powerUpGun)
                 {
-                    fireRate /= 2;
+                    fireRate /= gunModifier;
                     powerUpGun = true;
                     
                 }

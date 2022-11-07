@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
         amountToSpawn = 3;
         lives = 3;
         firstTime = true;
-        timeTillStart = 10f;
+        timeTillStart = 4f;
         amountOfZombies = 0;
     }
 

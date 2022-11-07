@@ -32,6 +32,8 @@ public class ShootingScript : MonoBehaviour
     //gun damage
     private float gunDamage;
 
+    [SerializeField] float gunOffset = .5f;
+
     private PlayerMovement playerMovement;
 
     void Start()
@@ -86,12 +88,14 @@ public class ShootingScript : MonoBehaviour
             //shoot top right
             if (Input.GetKey(KeyCode.L))
             {
+                //player faces this direction
+                player.rotation = Quaternion.Euler(0f, 0f, -45f);
                 //direction bullet faces
                 fireDirection = Quaternion.Euler(0f, 0f, -45f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
                 //offset so bullet doesn't spawn on player, diagonols have less offset
-                positionOffset = player.position + (Vector3.up + Vector3.right) * offsetModifier * .66f;
+                positionOffset = player.position + (Vector3.up + Vector3.right) * offsetModifier * .16f + Vector3.right * gunOffset*1.3f;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -102,12 +106,14 @@ public class ShootingScript : MonoBehaviour
             //shoot top left
             else if (Input.GetKey(KeyCode.J))
             {
+                //player faces this direction
+                player.rotation = Quaternion.Euler(0f, 0f, 45f);
                 //direction bullet faces
                 fireDirection = Quaternion.Euler(0f, 0f, 45f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
                 //offset so bullet doesn't spawn on player, diagonols have less offset
-                positionOffset = player.position + (Vector3.up + Vector3.left) * offsetModifier * .66f;
+                positionOffset = player.position + (Vector3.up*1.2f + Vector3.left*.9f) * offsetModifier + Vector3.right * gunOffset;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -118,12 +124,14 @@ public class ShootingScript : MonoBehaviour
             //shoot up
             else
             {
+                //player faces this direction
+                player.rotation = Quaternion.Euler(0f, 0f, 0f);
                 //direction bullet faces
                 fireDirection = Quaternion.Euler(0f, 0f, 0f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
                 //offset below player
-                positionOffset = player.position + Vector3.up * offsetModifier;
+                positionOffset = player.position + Vector3.up * offsetModifier + Vector3.right * gunOffset;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -135,12 +143,14 @@ public class ShootingScript : MonoBehaviour
         //shooting left
         if (Input.GetKey(KeyCode.J) && fireRateCounter <= 0 && !(Input.GetKey(KeyCode.K)) && !(Input.GetKey(KeyCode.I)))
         {
+            //player faces this direction
+            player.rotation = Quaternion.Euler(0f, 0f, 90f);
             //direction bullet faces
             fireDirection = Quaternion.Euler(0f, 0f, 90f);
             //set fire rate to the amount of time to wait
             fireRateCounter = fireRate;
             //offset left of player
-            positionOffset = player.position + Vector3.left * offsetModifier;
+            positionOffset = player.position + Vector3.left * offsetModifier + Vector3.up* gunOffset;
             //creates bullet
             var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
             //applies speed to the bullet
@@ -151,12 +161,14 @@ public class ShootingScript : MonoBehaviour
         //shooting right if the right button is pressed and the bottom and top arent pressed
         if (Input.GetKey(KeyCode.L) && fireRateCounter <= 0 && !(Input.GetKey(KeyCode.K)) && !(Input.GetKey(KeyCode.I)))
         {
+            //player faces this direction
+            player.rotation = Quaternion.Euler(0f, 0f, -90f);
             //direction bullet faces
             fireDirection = Quaternion.Euler(0f, 0f, 90f);
             //set fire rate to the amount of time to wait
             fireRateCounter = fireRate;
             //offset to the right of player
-            positionOffset = player.position + Vector3.right * offsetModifier;
+            positionOffset = player.position + Vector3.right * offsetModifier + Vector3.down * gunOffset;
             //creates bullet
             var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
             //applies speed to the bullet
@@ -170,12 +182,14 @@ public class ShootingScript : MonoBehaviour
             //shoot bottom right
             if (Input.GetKey(KeyCode.L))
             {
+                //player faces this direction
+                player.rotation = Quaternion.Euler(0f, 0f, -135f);
                 //direction bullet faces
                 fireDirection = Quaternion.Euler(0f, 0f, 45f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
                 //offset so bullet doesn't spawn on player, diagonols have less offset
-                positionOffset = player.position + (Vector3.down + Vector3.right) * offsetModifier * .66f;
+                positionOffset = player.position + (Vector3.down*1.2f + Vector3.right*.9f) * offsetModifier + Vector3.left * gunOffset;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -185,12 +199,14 @@ public class ShootingScript : MonoBehaviour
             }
             //shoot bottom left
             else if (Input.GetKey(KeyCode.J)){
+                //player faces this direction
+                player.rotation = Quaternion.Euler(0f, 0f, 135f);
                 //direction bullet faces
                 fireDirection = Quaternion.Euler(0f, 0f, -45f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
                 //offset so bullet doesn't spawn on player, diagonols have less offset
-                positionOffset = player.position + (Vector3.down +Vector3.left ) * offsetModifier * .66f;
+                positionOffset = player.position + (Vector3.down +Vector3.left ) * offsetModifier * .16f + Vector3.left * gunOffset * 1.3f;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -201,12 +217,14 @@ public class ShootingScript : MonoBehaviour
             //shoot down
             else
             {
+                //player faces this direction
+                player.rotation = Quaternion.Euler(0f, 0f, 180f);
                 //direction bullet faces
                 fireDirection = Quaternion.Euler(0f, 0f, 0f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
                 //offset below player
-                positionOffset = player.position + Vector3.down * offsetModifier;
+                positionOffset = player.position + Vector3.down * offsetModifier + Vector3.left * gunOffset;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet

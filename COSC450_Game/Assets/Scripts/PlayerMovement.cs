@@ -69,29 +69,15 @@ public class PlayerMovement : MonoBehaviour
     //flashes character sprite
     public IEnumerator characterInvisible()
     {
-        sprite.color = new Color(1, 1, 1, .2f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, 1f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, .2f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, 1f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, .2f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, 1f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, .2f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, 1f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, .2f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, 1f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, .2f);
-        yield return new WaitForSeconds(.125f);
-        sprite.color = new Color(1, 1, 1, 1f);
+        for(int i = 0; i<6; i++)
+        {
+            sprite.color = new Color(255f/255f, 208f/255f, 68f/255f, .2f);
+            yield return new WaitForSeconds(.125f);
+            sprite.color = new Color(255f/255f, 208f/255f, 68f/255f, 1f);
+            yield return new WaitForSeconds(.125f);
+        }
+        
+       
         isInvincible = false;
     }
     //when a zombie collides with the player, remove a life

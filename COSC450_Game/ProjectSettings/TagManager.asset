@@ -3,11 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - PowerUp
-  - Enemy
-  - Bullet
-  - EnemyProjectile
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -15,9 +11,6 @@ TagManager:
   - 
   - Water
   - UI
-  - PowerUp
-  - Enemy
-  - Player
   - 
   - 
   - 
@@ -32,6 +25,9 @@ TagManager:
   - 
   - 
   - 
+  - Layer 1
+  - Layer 2
+  - Layer 3
   - 
   - 
   - 
@@ -45,9 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Upper
-    uniqueID: 2162977243
+  - name: Layer 1
+    uniqueID: 2425651459
     locked: 0
-  - name: Player
-    uniqueID: 3381650273
+  - name: Layer 2
+    uniqueID: 4250941897
+    locked: 0
+  - name: Layer 3
+    uniqueID: 4189426099
     locked: 0

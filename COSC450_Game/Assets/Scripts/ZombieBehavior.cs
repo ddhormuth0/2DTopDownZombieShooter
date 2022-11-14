@@ -28,7 +28,13 @@ public class ZombieBehavior : MonoBehaviour
     Vector3 positionOffset;
     [SerializeField] float projectileSpeed;
     [SerializeField] float projectileVariance;
-
+    [SerializeField] AudioSource zombieSource;
+    [SerializeField] AudioClip firstNoise;
+    [SerializeField] AudioClip secondNoise;
+    [SerializeField] AudioClip thirdNoise;
+    [SerializeField] AudioClip deathNoise;
+    [SerializeField] AudioClip bossHitNoise;
+    [SerializeField] AudioClip bossDeathNoise;
 
     Vector2 moveDirection;
 
@@ -42,6 +48,7 @@ public class ZombieBehavior : MonoBehaviour
             healthBar = this.GetComponent<HealthBar>();
             timeToFire = 1f;
         }
+        StartCoroutine(zombieNoises());
     }
     // Start is called before the first frame update
     void Start()
@@ -100,10 +107,22 @@ public class ZombieBehavior : MonoBehaviour
         if (isBoss)
         {
             healthBar.SetHealth((int)health);
+            if(Random.Range(1,4) == 3)
+            {
+                zombieSource.PlayOneShot(bossHitNoise);
+            }
         }
         //check to see if dead
         if (health <= 0)
         {
+            if(Random.Range(1,6) == 5 && !isBoss)
+            {
+                if(this.isActiveAndEnabled) zombieSource.PlayOneShot(deathNoise);
+            }
+            if (isBoss)
+            {
+                zombieSource.PlayOneShot(bossDeathNoise);
+            }
             Destroy(this.gameObject);
         }
     }
@@ -111,5 +130,33 @@ public class ZombieBehavior : MonoBehaviour
     public void OnDestroy()
     {
         gcScript.decrementZombies();
+    }
+
+    public IEnumerator zombieNoises()
+    {
+        while (true)
+        {
+            if (Random.Range(1, 6) == 5)
+            {
+                int noise = Random.Range(1, 4);
+                switch (noise)
+                {
+                    case 1:
+                        zombieSource.PlayOneShot(firstNoise);
+                        break;
+                    case 2:
+                        zombieSource.PlayOneShot(secondNoise);
+                        break;
+                    case 3:
+                        zombieSource.PlayOneShot(thirdNoise);
+                        break;
+                    default:
+                        Debug.LogError("LINE 126 ZombieBehavior: This should not happen!");
+                        break;
+                }
+            }
+            yield return new WaitForSeconds(1f);
+        }
+        
     }
 }

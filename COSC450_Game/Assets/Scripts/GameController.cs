@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     private int amountOfZombies;
     [SerializeField] Text zombies;
     private bool bossFightMode;
+    AudioSource playerAudio;
 
     public GameObject slider;
     public Text timeText;
@@ -48,6 +49,7 @@ public class GameController : MonoBehaviour
         firstTime = true;
         amountOfZombies = 0;
         bossFightMode = false;
+        playerAudio = this.gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -229,6 +231,7 @@ public class GameController : MonoBehaviour
     public void hasDied()
     {
         lives--;
+        playerAudio.Play();
         if(lives <= 0)
         {
             //increment the active scene to the next scene
@@ -246,11 +249,9 @@ public class GameController : MonoBehaviour
     }
     public IEnumerator endSceneWin()
     {
-        Time.timeScale = 0;
         gameEnd.text = ("You Did It!");
         gameEnd.gameObject.SetActive(true);
-        yield return new WaitForSecondsRealtime(4f);
-        Time.timeScale = 1;
+        yield return new WaitForSeconds(4f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

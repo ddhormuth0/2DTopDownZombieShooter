@@ -35,6 +35,7 @@ public class ShootingScript : MonoBehaviour
     [SerializeField] float gunOffset = .5f;
     [SerializeField] float gunModifier;
     [SerializeField] float movementSpeedModifier;
+    [SerializeField] AudioSource gunNoise;
 
     private PlayerMovement playerMovement;
 
@@ -100,10 +101,12 @@ public class ShootingScript : MonoBehaviour
                 positionOffset = player.position + (Vector3.up + Vector3.right) * offsetModifier * .16f + Vector3.right * gunOffset*1.3f;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                gunNoise.Play();
                 //applies speed to the bullet
                 bullet.GetComponent<Rigidbody2D>().AddForce((Vector2.up + Vector2.right) * bulletSpeed);
                 //destroys bullet after 1 second
                 Destroy(bullet, 1.0f);
+                
             }
             //shoot top left
             else if (Input.GetKey(KeyCode.J))
@@ -118,6 +121,7 @@ public class ShootingScript : MonoBehaviour
                 positionOffset = player.position + (Vector3.up*1.2f + Vector3.left*.9f) * offsetModifier + Vector3.right * gunOffset;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                gunNoise.Play();
                 //applies speed to the bullet
                 bullet.GetComponent<Rigidbody2D>().AddForce((Vector2.up + Vector2.left) * bulletSpeed);
                 //destroys bullet after 1 second
@@ -136,6 +140,7 @@ public class ShootingScript : MonoBehaviour
                 positionOffset = player.position + Vector3.up * offsetModifier + Vector3.right * gunOffset;
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
+                gunNoise.Play();
                 //applies speed to the bullet
                 bullet.GetComponent<Rigidbody2D>().AddForce(Vector2.up * bulletSpeed);
                 //destroys bullet after 1 second
@@ -153,6 +158,7 @@ public class ShootingScript : MonoBehaviour
             fireRateCounter = fireRate;
             //offset left of player
             positionOffset = player.position + Vector3.left * offsetModifier + Vector3.up* gunOffset;
+            gunNoise.Play();
             //creates bullet
             var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
             //applies speed to the bullet
@@ -171,6 +177,7 @@ public class ShootingScript : MonoBehaviour
             fireRateCounter = fireRate;
             //offset to the right of player
             positionOffset = player.position + Vector3.right * offsetModifier + Vector3.down * gunOffset;
+            gunNoise.Play();
             //creates bullet
             var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
             //applies speed to the bullet
@@ -192,6 +199,7 @@ public class ShootingScript : MonoBehaviour
                 fireRateCounter = fireRate;
                 //offset so bullet doesn't spawn on player, diagonols have less offset
                 positionOffset = player.position + (Vector3.down*1.2f + Vector3.right*.9f) * offsetModifier + Vector3.left * gunOffset;
+                gunNoise.Play();
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -209,6 +217,7 @@ public class ShootingScript : MonoBehaviour
                 fireRateCounter = fireRate;
                 //offset so bullet doesn't spawn on player, diagonols have less offset
                 positionOffset = player.position + (Vector3.down +Vector3.left ) * offsetModifier * .16f + Vector3.left * gunOffset * 1.3f;
+                gunNoise.Play();
                 //creates bullet
                 var bullet = Instantiate(bulletPrefab, positionOffset, fireDirection);
                 //applies speed to the bullet
@@ -225,6 +234,7 @@ public class ShootingScript : MonoBehaviour
                 fireDirection = Quaternion.Euler(0f, 0f, 0f);
                 //set fire rate to the amount of time to wait
                 fireRateCounter = fireRate;
+                gunNoise.Play();
                 //offset below player
                 positionOffset = player.position + Vector3.down * offsetModifier + Vector3.left * gunOffset;
                 //creates bullet

@@ -12,6 +12,6 @@ public class PlayButton : MonoBehaviour
 
     public void mainMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }
